@@ -1,0 +1,45 @@
+Todo一覧画面
+
+queryメソッドやprepareメソッドでクエリを実行した結果（select文（レコード取得のクエリ）など）から、
+全てを取得する返り値は配列
+
+
+
+-----
+新規作成画面
+
+todoを追加ボタンを押下した際に表示するページのURLと処理を、
+19行目のルートGETメソッドで指定します
+
+表示するURLは/todo/create、処理はTodoControllerクラスのcreateメソッド
+またnameメソッドでtodo.createと名前を付けておき、todoを追加ボタンのURLに指定します。
+
+さらに20行目のルートPOSTメソッドを使って、作成ボタンを押下した後に表示するページのURLと
+その時の処理を指定しています。
+
+こちらにもnameメソッドで名前を付けておきます
+
+Route::get('/todo/create', 'TodoController@create')->name('todo.create');
+Route::post('/todo', 'TodoController@store')->name('todo.store');
+
+関数内でcreateメソッドではview関数でtodoディレクトリ内のcreate.blade.phpファイルを
+表示するよう指定しています
+
+
+
+public function store(Request $request) 
+
+・メソッドインジェクションを使ってRequestクラスをインスタンス化し、$requestに格納
+
+・Requestクラスのallメソッドを使って、送信した内容を連想配列で一括で取得して$inputに代入
+
+・todoModelクラスをインスタンス化し、fillメソッドで
+　取得した送信内容を、todoインスタンスの各プロパティに一括で代入する 
+・saveメソッドを使ってオブジェクトの状態をDBに保存するINSERT文を実行する
+
+・リダイレクト関数と
+/* ここのallメソッドはRequestクラス内で追加したConcerns\InteractsWithInputというトレイト内のallメソッドのこと */
+
+create.blade.phpではformタグのPOSTメソッドを使って入力したtodoの内容を送信しています
+また＠csrfを使ってcsrf対策のトークンを含むinputタグを生成して、一緒に送信しています
+コレクションクラスはメソッドが使えるから便利。
