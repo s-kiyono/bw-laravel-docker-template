@@ -8,15 +8,22 @@ queryメソッドやprepareメソッドでクエリを実行した結果（selec
 -----
 新規作成画面
 
-todoを追加ボタンを押下した際に表示するページのURLと処理を、
-19行目のルートGETメソッドで指定します
 
-表示するURLは/todo/create、処理はTodoControllerクラスのcreateメソッド
-またnameメソッドでtodo.createと名前を付けておき、todoを追加ボタンのURLに指定します。
+Todo一覧画面のtodoを追加ボタンを押下した時と、
+新規作成画面でtodoを作成するボタンを押した時の
+ルートを定義します。
 
-さらに20行目のルートPOSTメソッドを使って、作成ボタンを押下した後に表示するページのURLと
+todoを追加ボタンを押した時は新規作成画面を表示させるので、
+19行目でRoute::GETメソッドを使って、
+URLは/todo/create、処理はTodoControllerクラスのcreateメソッド
+またnameメソッドでtodo.createと名前を付けて、います。
+
+Todoを追加ボタンのURLに指定します。
+
+さらにtodoを作成するボタンを押した時はまたTodo一覧画面を表示するので
+20行目でRoute::postメソッドを使って、
+作成ボタンを押下した後に表示するページのURLと
 その時の処理を指定しています。
-
 こちらにもnameメソッドで名前を付けておきます
 
 Route::get('/todo/create', 'TodoController@create')->name('todo.create');
@@ -29,17 +36,24 @@ Route::post('/todo', 'TodoController@store')->name('todo.store');
 
 public function store(Request $request) 
 
-・メソッドインジェクションを使ってRequestクラスをインスタンス化し、$requestに格納
+・メソッドインジェクションを使ってRequestクラスをインスタンス化し、
+　$requestに格納
 
-・Requestクラスのallメソッドを使って、送信した内容を連想配列で一括で取得して$inputに代入
+・Requestクラスのallメソッドを使って、送信した内容を
+　連想配列で一括で取得して$inputsに代入
 
 ・todoModelクラスをインスタンス化し、fillメソッドで
 　取得した送信内容を、todoインスタンスの各プロパティに一括で代入する 
 ・saveメソッドを使ってオブジェクトの状態をDBに保存するINSERT文を実行する
 
 ・リダイレクト関数と
-/* ここのallメソッドはRequestクラス内で追加したConcerns\InteractsWithInputというトレイト内のallメソッドのこと */
+
+53 0
+/* ここのallメソッドはRequestクラス内で追加した
+Concerns\InteractsWithInputというトレイト内のallメソッドのこと */
 
 create.blade.phpではformタグのPOSTメソッドを使って入力したtodoの内容を送信しています
-また＠csrfを使ってcsrf対策のトークンを含むinputタグを生成して、一緒に送信しています
+またディレクティブの＠csrfを使ってcsrf対策のトークンを含むinputタグを生成して、一緒に送信しています
+作成ボタンを押下した際に
+
 コレクションクラスはメソッドが使えるから便利。
