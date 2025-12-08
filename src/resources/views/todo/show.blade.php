@@ -14,7 +14,7 @@
         <div class="col-auto">
           <a href="{{ route('todo.edit', $todo->id) }}" class="btn btn-info">編集する</a>
         </div>
-      </div>            
+      </div>
     </div>
   </div>
 </div>
